@@ -1,0 +1,16 @@
+{
+  "name": "NEXA Graphisme IA",
+  "short_name": "NEXA",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#6200ee",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://image.pollinations.ai/p/beautiful%20purple%20neon%20letter%20N%20cyberpunk%20icon?width=192&height=192&seed=42",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
