@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXA - Générateur d'images IA</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6200ee">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #121212; 
+            color: #ffffff; 
+            text-align: center; 
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding-top: 30px;
+        }
+        h1 { color: #bb86fc; font-size: 28px; margin-bottom: 5px; }
+        .subtitle { color: #aaaaaa; font-size: 14px; margin-bottom: 25px; }
+        
+        input { 
+            width: 100%; 
+            padding: 14px; 
+            margin-bottom: 15px; 
+            border-radius: 10px; 
+            border: 2px solid #333333; 
+            background: #1e1e1e;
+            color: white;
+            font-size: 16px; 
+            outline: none;
+        }
+        input:focus { border-color: #bb86fc; }
+        
+        button { 
+            background: #6200ee; 
+            color: white; 
+            border: none; 
+            width: 100%;
+            padding: 14px; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: bold;
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+        button:active { background: #3700b3; }
+        
+        #result-box { margin-top: 25px; width: 100%; min-height: 300px; display: none; }
+        #result { width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        .loading { 
+            display: none; 
+            color: #03dac6; 
+            margin-top: 20px; 
+            font-weight: bold;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>NEXA</h1>
+        <p class="subtitle">Génération d'images IA gratuite & illimitée</p>
+        
+        <input type="text" id="prompt" placeholder="Ex: A futuristic sports car, neon lights, 4k...">
+        <button onclick="generateImage()">Créer l'image</button>
+        
+        <div class="loading" id="loading">NEXA est en train de dessiner... 🎨</div>
+        
+        <div id="result-box">
+            <img id="result" src="" alt="Image générée par NEXA">
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            const promptValue = document.getElementById('prompt').value;
+            if(!promptValue) {
+                alert("Écris une description avant de générer !");
+                return;
+            }
+            
+            const loading = document.getElementById('loading');
+            const resultBox = document.getElementById('result-box');
+            const img = document.getElementById('result');
+            
+            loading.style.display = 'block';
+            resultBox.style.display = 'none';
+            
+            // Connexion à l'API gratuite Pollinations
+            const randomSeed = Math.floor(Math.random() * 999999);
+            const cleanPrompt = encodeURIComponent(promptValue);
+            const url = `https://image.pollinations.ai/p/${cleanPrompt}?width=512&height=512&seed=${randomSeed}&enhance=true`;
+            
+            img.src = url;
+            
+            img.onload = function() {
+                loading.style.display = 'none';
+                resultBox.style.display = 'block';
+            };
+            
+            img.onerror = function() {
+                loading.style.display = 'none';
+                alert("Erreur lors de la génération. Réessaye !");
+            };
+        }
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
